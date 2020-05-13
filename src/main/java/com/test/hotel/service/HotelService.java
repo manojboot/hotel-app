@@ -1,6 +1,8 @@
 package com.test.hotel.service;
 
-import java.util.List;
+
+import com.test.hotel.model.Hotel;
+import com.test.hotel.model.HotelModel;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -9,13 +11,16 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.test.hotel.model.Hotel;
-import com.test.hotel.model.HotelModel;
+import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
+/**
+ * @author Frank P. Moley III.
+ */
 @Service
 public class HotelService {
-
-	private static final String GUESTS = "/guest";
+    private static final String GUESTS = "/guest";
 	private static final String ALLGUESTS = "/allGuest";
     private static final String SLASH = "/";
 

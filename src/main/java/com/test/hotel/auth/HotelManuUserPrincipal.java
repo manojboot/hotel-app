@@ -1,62 +1,70 @@
 package com.test.hotel.auth;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class HotelManuUserPrincipal implements UserDetails{
 
-	
-			private User user;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7421080551586704312L;
+	private User user;
+    private List<AuthGroup> authGroups;
 
-			public HotelManuUserPrincipal(User user) {
-				super();
-				this.user = user;
-			}
+    public HotelManuUserPrincipal(User user, List<AuthGroup> authGroups){
+        super();
+        this.user = user;
+        this.authGroups = authGroups;
+    }
 
-			@Override
-			public Collection<? extends GrantedAuthority> getAuthorities() {
-				// TODO Auto-generated method stub
-				return Collections.singleton(new SimpleGrantedAuthority("USER"));
-			}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(null==authGroups){
+            return Collections.emptySet();
+        }
+        Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
+        authGroups.forEach(group->{
+           grantedAuthorities.add(new SimpleGrantedAuthority(group.getAuthGroup()));
+        });
+        return grantedAuthorities;
 
-			@Override
-			public String getPassword() {
-				// TODO Auto-generated method stub
-				return this.user.getPassword();
-			}
+    }
 
-			@Override
-			public String getUsername() {
-				// TODO Auto-generated method stub
-				return this.user.getUsername();
-			}
+    @Override
+    public String getPassword() {
+        return this.user.getPassword();
+    }
 
-			@Override
-			public boolean isAccountNonExpired() {
-				// TODO Auto-generated method stub
-				return true;
-			}
+    @Override
+    public String getUsername() {
+        return this.user.getUsername();
+    }
 
-			@Override
-			public boolean isAccountNonLocked() {
-				// TODO Auto-generated method stub
-				return true;
-			}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-			@Override
-			public boolean isCredentialsNonExpired() {
-				// TODO Auto-generated method stub
-				return true;
-			}
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-			@Override
-			public boolean isEnabled() {
-				// TODO Auto-generated method stub
-				return true;
-			}
-			
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
